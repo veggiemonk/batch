@@ -5,6 +5,14 @@ Split an array/slice into `n` evenly chunks.
 Inspired from the blog post by [Paul Di Gian](https://github.com/PaulDiGian) on his blog:
 [Split a slice or array in a defined number of chunks in golang](https://pauldigian.com/split-a-slice-or-array-in-a-defined-number-of-chunks-in-golang-but-any-language-really)
 
+<!-- TOC -->
+* [Batch](#batch)
+  * [Installation](#installation)
+  * [Usage](#usage)
+  * [Usage with Cloud Run Jobs](#usage-with-cloud-run-jobs)
+  * [Rationale](#rationale)
+<!-- TOC -->
+
 ## Installation
 
 Requires Go 1.18 or later.
