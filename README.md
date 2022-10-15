@@ -19,6 +19,14 @@ go mod tidy
 
 ## Usage
 
+**Note**: you might better off just copying the function into your codebase. 
+It is less 10 lines of code.
+
+See [Go Proverbs](https://go-proverbs.github.io/) for more details.
+
+> A little copying is better than a little dependency.
+
+
 ```go
 package main
 
@@ -41,6 +49,37 @@ func main() {
     // the size of each batch has variation of max 1 item
     // this can spread the load evenly amongst workers
 }
+```
+
+## Usage with Cloud Run Jobs
+
+```go
+
+batchID = uuid.New().String()
+taskCount, _ = strconv.Atoi(os.Getenv("CLOUD_RUN_TASK_COUNT"))
+taskIndex, _ = strconv.Atoi(os.Getenv("CLOUD_RUN_TASK_INDEX"))
+
+tt, err := requestToTasks(request)
+if err != nil {
+	return fmt.Errorf("failed to get list of tasks (id:%s): %w", batchID, err)
+}
+
+if len(tt) == 0 {
+	return fmt.Errorf("no tasks found (id:%s): %w", batchID, ErrNoTaskFound)
+}
+
+batches := batch.BatchSlice(tt, taskCount)
+if taskIndex >= len(batches) || taskIndex < 0 {
+	return fmt.Errorf("index (%d) out of bounds (max: %d), (id:%s): %w", taskIndex, len(batches), batchID, ErrTaskIndexOutOfBounds)
+}
+
+b := batches[taskIndex]
+
+err = process(b)
+if err != nil {
+    return fmt.Errorf("failed to process batch (id:%s): %w", batchID, err)
+}
+
 ```
 
 ## Rationale
