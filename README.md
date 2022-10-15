@@ -39,13 +39,17 @@ func main() {
     // length      3       3        4
     // output: [[1 2 3] [4 5 6] [7 8 9 10]]
     // the size of each batch has variation of max 1 item
+    // this can spread the load evenly amongst workers
 }
 ```
 
-## 
+## Rationale
 
+Having evenly sized batch is useful when you want to distribute the workload evenly across multiple workers.
 
-Here an example:
+As opposed to defining the _size of each batch_, we define the _number of batch we want_ to have.
+
+Here a **counter** example:
 
 ```go
 package main
@@ -67,16 +71,13 @@ func main() {
 	}
 	
 	fmt.Println(result)
+	// length       4    |    4    |  2 
+	// output: [[1 2 3 4] [5 6 7 8] [9 10]]
+	// 2 workers will do double the work of the last worker.
 }
 ```
 
-The output is:
-
-```bash
-#  length 
-#     4   |    4    |  2
-[[1 2 3 4] [5 6 7 8] [9 10]]
-```
+This is not ideal when you want to distribute the workload evenly across multiple workers.
 
 
 
