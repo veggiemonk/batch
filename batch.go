@@ -1,4 +1,4 @@
-package main
+package batch
 
 // BatchSlice evenly slices an array `a` into `b` number of batches
 // the size of each batch never deviates more than 1 from the average batch size.
