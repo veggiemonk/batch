@@ -1,9 +1,10 @@
-package batch
+package batch_test
 
 import (
-	"fmt"
 	"reflect"
 	"testing"
+
+	"github.com/veggiemonk/batch"
 )
 
 func TestBatchSlice(t *testing.T) {
@@ -145,7 +146,7 @@ func TestBatchSlice(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(
 			tt.name, func(t *testing.T) {
-				got := BatchSlice(tt.args.a, tt.args.b)
+				got := batch.Slice(tt.args.a, tt.args.b)
 				// for _, v := range got {
 				// 	fmt.Println("check size", v, len(v), len(tt.args.a)/tt.args.b, len(v)-(len(tt.args.a)/tt.args.b))
 				// 	if math.Abs(float64(len(v)-(len(tt.args.a)/tt.args.b))) > 1 {
@@ -155,32 +156,6 @@ func TestBatchSlice(t *testing.T) {
 				if !reflect.DeepEqual(got, tt.want) {
 					t.Errorf("\nBatchSlice() = %v\n        want = %v", got, tt.want)
 				}
-			},
-		)
-	}
-}
-
-func FuzzBatchSliceByte(f *testing.F) {
-	f.Fuzz(
-		func(t *testing.T, a []byte, b int) {
-			BatchSlice(a, b)
-		},
-	)
-}
-
-func BenchmarkBatchSlice(b *testing.B) {
-	for size := 10; size < 1000000; size *= 10 {
-		array := genArrayInt(size)
-		batch := len(array) / 11
-		var res [][]int
-
-		b.Run(
-			fmt.Sprint("size=", size), func(b *testing.B) {
-				for i := 0; i < b.N; i++ {
-					res = BatchSlice(array, batch)
-				}
-				b.ReportAllocs()
-				_ = res
 			},
 		)
 	}

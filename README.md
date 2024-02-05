@@ -48,7 +48,7 @@ func main() {
     s :=  []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 
     // Split the slice into 3 even parts
-    chunks := batch.BatchSlice(s, 3)
+    chunks := batch.Slice(s, 3)
 
     // Print the chunks
     fmt.Println(chunks)
@@ -76,7 +76,7 @@ if len(tt) == 0 {
 	return fmt.Errorf("no tasks found (id:%s): %w", batchID, ErrNoTaskFound)
 }
 
-batches := batch.BatchSlice(tt, taskCount)
+batches := batch.Slice(tt, taskCount)
 if taskIndex >= len(batches) || taskIndex < 0 {
 	return fmt.Errorf("index (%d) out of bounds (max: %d), (id:%s): %w", taskIndex, len(batches), batchID, ErrTaskIndexOutOfBounds)
 }
@@ -121,6 +121,7 @@ func main() {
 	// length       4    |    4    |  2 
 	// output: [[1 2 3 4] [5 6 7 8] [9 10]]
 	// 2 workers will do double the work of the last worker.
+	// --> Not what we want.
 }
 ```
 
