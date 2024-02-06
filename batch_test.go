@@ -61,22 +61,22 @@ func TestBatchSlice(t *testing.T) {
 			},
 			want: [][]int{{}, {}, {}},
 		},
-		// {
-		// 	name: "batch slice 3/0",
-		// 	args: args{
-		// 		a: []int{1, 2, 3},
-		// 		b: 0,
-		// 	},
-		// 	want: [][]int{}, // CANNOT BE COMPARED: [] != []
-		// },
-		// {
-		// 	name: "batch slice 3/-1",
-		// 	args: args{
-		// 		a: []int{1, 2, 3},
-		// 		b: -1,
-		// 	},
-		// 	want: [][]int{}, // CANNOT BE COMPARED: [] != []
-		// },
+		{
+			name: "batch slice 3/0",
+			args: args{
+				a: []int{1, 2, 3},
+				b: 0,
+			},
+			want: [][]int{},
+		},
+		{
+			name: "batch slice 3/-1",
+			args: args{
+				a: []int{1, 2, 3},
+				b: -1,
+			},
+			want: [][]int{},
+		},
 		{
 			name: "batch slice 42/10",
 			args: args{
@@ -144,19 +144,16 @@ func TestBatchSlice(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
-		t.Run(
-			tt.name, func(t *testing.T) {
-				got := batch.Slice(tt.args.a, tt.args.b)
-				// for _, v := range got {
-				// 	fmt.Println("check size", v, len(v), len(tt.args.a)/tt.args.b, len(v)-(len(tt.args.a)/tt.args.b))
-				// 	if math.Abs(float64(len(v)-(len(tt.args.a)/tt.args.b))) > 1 {
-				// 		t.Errorf("Too much variation in batch length \n BatchSlice() = %v, want %v", got, tt.want)
-				// 	}
-				// }
-				if !reflect.DeepEqual(got, tt.want) {
-					t.Errorf("\nBatchSlice() = %v\n        want = %v", got, tt.want)
-				}
-			},
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			got := batch.Slice(tt.args.a, tt.args.b)
+			if len(got) != len(tt.want) {
+				t.Errorf("\nBatchSlice() [len = %d]\n        want [len = %d]", len(got), len(tt.want))
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("\nBatchSlice() = %v\n        want = %v", got, tt.want)
+			}
+		},
 		)
 	}
 }
