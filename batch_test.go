@@ -30,6 +30,19 @@ func TestBatchSlice(t *testing.T) {
 			},
 		},
 		{
+			name: "batch slice 6/4",
+			args: args{
+				a: []int{1, 2, 3, 4, 5, 6},
+				b: 4,
+			},
+			want: [][]int{
+				{1},
+				{2, 3},
+				{4},
+				{5, 6},
+			},
+		},
+		{
 			name: "batch slice 3/3",
 			args: args{
 				a: []int{1, 2, 3},
