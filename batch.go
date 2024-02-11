@@ -22,7 +22,7 @@ func Slice[T any](a []T, n int) [][]T {
 	return batches
 }
 
-// BatchSlice is an alias function to maintain backward compatibility.
+// Deprecated: BatchSlice is an alias function to [Slice] to maintain backward compatibility.
 // It waa changed because the name of the package was in the function name,
 // which is redundant.
 func BatchSlice[T any](a []T, n int) [][]T { return Slice(a, n) }
